@@ -1,6 +1,8 @@
 # mac (Whatsapp framework) 
 ![Version](https://img.shields.io/badge/version-1.1.0-brightgreen.svg?style=flat-square)
 ![Version](https://img.shields.io/badge/release-beta-green.svg?style=flat-square)
+# Modulo DialogFlow adicionado:
+1. Versão com integração com Dialogflow
 
 <!---[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=57RJJGH3HPCG6)-->
 ###### Everything seems to be working nice now
