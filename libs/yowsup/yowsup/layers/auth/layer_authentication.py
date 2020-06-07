@@ -101,7 +101,7 @@ class YowAuthenticationProtocolLayer(YowProtocolLayer):
         passive = self.getProp(self.__class__.PROP_PASSIVE, False)
         nonce = StorageTools.getNonce(self.credentials[0])
 
-        if nonce == None:
+        if nonce is None:
             self.entityToLower(AuthProtocolEntity(self.credentials[0], passive=passive))
         else:
             inputKey, outputKey, authBlob = self.generateAuthBlob(nonce)

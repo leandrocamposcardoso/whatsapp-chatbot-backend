@@ -64,11 +64,10 @@ class SenderKeyState:
         return Curve.decodePrivatePoint(self.senderKeyStateStructure.senderSigningKey.private)
 
     def hasSenderMessageKey(self, iteration):
-        for senderMessageKey in self.senderKeyStateStructure.senderMessageKeys:
-            if senderMessageKey.iteration == iteration:
-                return True
-
-        return False
+        return any(
+            senderMessageKey.iteration == iteration
+            for senderMessageKey in self.senderKeyStateStructure.senderMessageKeys
+        )
 
     def addSenderMessageKey(self, senderMessageKey):
         smk = self.senderKeyStateStructure.SenderMessageKey()
@@ -80,7 +79,7 @@ class SenderKeyState:
         keys = self.senderKeyStateStructure.senderMessageKeys
         result = None
 
-        for i in range(0, len(keys)):
+        for i in range(len(keys)):
             senderMessageKey = keys[i]
             if senderMessageKey.iteration == iteration:
                 result = senderMessageKey

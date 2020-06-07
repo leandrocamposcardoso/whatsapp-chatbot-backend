@@ -71,8 +71,7 @@ def is_vcard_media(message_entity):
 Builds a sendable text whatsapp message (self.toLower(message))
 """
 def make_message(msg, conversation):
-    outgoing_message_enity = TextMessageProtocolEntity(msg, to=conversation)
-    return outgoing_message_enity
+    return TextMessageProtocolEntity(msg, to=conversation)
 
 
 """

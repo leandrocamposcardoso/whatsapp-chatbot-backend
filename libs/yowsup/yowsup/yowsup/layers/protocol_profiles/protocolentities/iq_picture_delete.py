@@ -14,11 +14,10 @@ class DeletePictureIqProtocolEntity(PictureIqProtocolEntity):
 
 
     def toProtocolTreeNode(self):
-        node = super(PictureIqProtocolEntity, self).toProtocolTreeNode()
         #attribs = {"type": "image", "id": self.pictureId}
         #pictureNode = ProtocolTreeNode("picture", attribs, None, None)
         #node.addChild(pictureNode)
-        return node
+        return super(PictureIqProtocolEntity, self).toProtocolTreeNode()
 
     @staticmethod
     def fromProtocolTreeNode(node):

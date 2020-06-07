@@ -54,7 +54,7 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
             elif protocolTreeNode.tag == "notification": #and protocolTreeNode["type"] == "encrypt":
                 self.onEncryptNotification(protocolTreeNode)
                 return
-            elif not protocolTreeNode.tag == "receipt":
+            elif protocolTreeNode.tag != "receipt":
                 #receipts will be handled by send layer
                 self.toUpper(protocolTreeNode)
 
@@ -196,7 +196,7 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
         m = Message()
         signals.node_intercepted.send((node, serializedData))
         handled = False
-    
+
         try:
             m.ParseFromString(serializedData)
             #pprint(m)
@@ -208,8 +208,8 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
                 return
             else:
                 raise ValueError("Unhandled")
-            
-        if not m or not serializedData:
+
+        if not (m and serializedData):
             raise ValueError("Empty message")
 
         if m.HasField("sender_key_distribution_message"):
@@ -218,10 +218,10 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
 
         if m.HasField("conversation"):
             self.handleConversationMessage(node, m.conversation)
-            
+
         elif m.HasField("contact_message"):
             self.handleContactMessage(node, m.contact_message)
-            
+
         # TODO: Change name of this message type since its not url_message anymore
         # Whenever a @tag message or an anwer message is sended fits inside here
         elif m.HasField("url_message"):

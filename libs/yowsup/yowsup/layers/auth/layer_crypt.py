@@ -28,18 +28,16 @@ class YowCryptLayer(YowLayer):
             if outputKey:
                 length1 += 4
                 buf = outputKey.encodeMessage(data, len(data), 0, len(data))
-                res = [0,0,0]
-                res.extend(buf)
+                res = [0, 0, 0, *buf]
                 res[0] = ((8 << 4) | (length1 & 16711680) >> 16) % 256
                 res[1] = ((length1 & 65280) >> 8) % 256
                 res[2] = (length1 & 255) % 256
-                
+
 
                 data = res
 
             else:
-                prep = [0,0,0]
-                prep.extend(data)
+                prep = [0, 0, 0, *data]
                 prep[0] = ((0 << 4) | (length1 & 16711680) >> 16) % 256
                 prep[1] = ((length1 & 65280) >> 8) % 256
                 prep[2] = (length1 & 255) % 256

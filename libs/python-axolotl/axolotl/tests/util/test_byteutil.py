@@ -13,8 +13,8 @@ class ByteUtilTest(unittest.TestCase):
         #                         '89c7024e884e440f1ff376bb2317b2d64deb7c8322f4'
         #                         'c5015d9d895849411ba1d793a827')
 
-        data = [i for i in range(0, 80)]
-        a_data = [i for i in range(0, 32)]
+        data = [i for i in range(80)]
+        a_data = [i for i in range(32)]
         b_data = [i for i in range(32, 64)]
         c_data = [i for i in range(64, 80)]
 

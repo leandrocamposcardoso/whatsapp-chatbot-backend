@@ -10,8 +10,7 @@ class IbProtocolEntity(ProtocolEntity):
         return self._createProtocolTreeNode({}, None, None)
 
     def __str__(self):
-        out  = "Ib:\n"
-        return out
+        return "Ib:\n"
 
     @staticmethod
     def fromProtocolTreeNode(node):

@@ -27,17 +27,17 @@ class SetPrivacyIqProtocolEntity(IqProtocolEntity):
     @staticmethod
     def checkValidNames(names):
         names = names if names else SetPrivacyIqProtocolEntity.NAMES
-        if not type(names) is list:
+        if type(names) is not list:
             names = [names]
 
         for name in names:
-            if not name in SetPrivacyIqProtocolEntity.NAMES:
+            if name not in SetPrivacyIqProtocolEntity.NAMES:
                 raise Exception("Name should be in: '" + "', '".join(SetPrivacyIqProtocolEntity.NAMES) + "' but is '" + name + "'")
         return names
 
     @staticmethod
     def checkValidValue(value):
-        if not value in SetPrivacyIqProtocolEntity.VALUES:
+        if value not in SetPrivacyIqProtocolEntity.VALUES:
             raise Exception("Value should be in: '" + "', '".join(SetPrivacyIqProtocolEntity.VALUES) + "' but is '" + value + "'")
         return value
 

@@ -37,33 +37,28 @@ class YowMediaProtocolLayer(YowProtocolLayer):
             self.entityToLower(entity)
 
     def recvMessageStanza(self, node):
-        if node.getAttributeValue("type") == "media":
-            mediaNode = node.getChild("media")
-            if mediaNode:
-                if mediaNode.getAttributeValue("type") == "image":
-                    entity = ImageDownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
-                    self.toUpper(entity)
-                elif mediaNode.getAttributeValue("type") == "audio":
-                    entity = AudioDownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
-                    self.toUpper(entity)
-                elif mediaNode.getAttributeValue("type") == "video":
-                    entity = VideoDownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
-                    self.toUpper(entity)
-                elif mediaNode.getAttributeValue("type") == "document":
-                    entity = DocumentDownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
-                    self.toUpper(entity)
-                elif mediaNode.getAttributeValue("type") == "location":
-                    entity = LocationMediaMessageProtocolEntity.fromProtocolTreeNode(node)
-                    self.toUpper(entity)
-                elif mediaNode.getAttributeValue("type") == "vcard":
-                    entity = VCardMediaMessageProtocolEntity.fromProtocolTreeNode(node)
-                    self.toUpper(entity)
-                else:
-                    entity = TextMessageProtocolEntity.fromProtocolTreeNode(node)
-                    self.toUpper(entity)
+        if node.getAttributeValue("type") != "media":
+            return
+        mediaNode = node.getChild("media")
+        if mediaNode:
+            if mediaNode.getAttributeValue("type") == "image":
+                entity = ImageDownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
+            elif mediaNode.getAttributeValue("type") == "audio":
+                entity = AudioDownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
+            elif mediaNode.getAttributeValue("type") == "video":
+                entity = VideoDownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
+            elif mediaNode.getAttributeValue("type") == "document":
+                entity = DocumentDownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
+            elif mediaNode.getAttributeValue("type") == "location":
+                entity = LocationMediaMessageProtocolEntity.fromProtocolTreeNode(node)
+            elif mediaNode.getAttributeValue("type") == "vcard":
+                entity = VCardMediaMessageProtocolEntity.fromProtocolTreeNode(node)
             else:
                 entity = TextMessageProtocolEntity.fromProtocolTreeNode(node)
-                self.toUpper(entity)
+        else:
+            entity = TextMessageProtocolEntity.fromProtocolTreeNode(node)
+
+        self.toUpper(entity)
 
     def sendIq(self, entity):
         """

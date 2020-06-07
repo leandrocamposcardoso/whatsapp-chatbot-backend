@@ -28,8 +28,7 @@ class LiteSessionStore(SessionStore):
         c.execute(q, (recipientId,))
         result = c.fetchall()
 
-        deviceIds = [r[0] for r in result]
-        return deviceIds
+        return [r[0] for r in result]
 
     def storeSession(self, recipientId, deviceId, sessionRecord):
         self.deleteSession(recipientId, deviceId)

@@ -56,7 +56,7 @@ class AndroidYowsupEnv(YowsupEnv):
 
         opad = bytearray()
         ipad = bytearray()
-        for i in range(0, 64):
+        for i in range(64):
             opad.append(0x5C ^ keyDecoded[i])
             ipad.append(0x36 ^ keyDecoded[i])
         hash = hashlib.sha1()
@@ -67,5 +67,4 @@ class AndroidYowsupEnv(YowsupEnv):
         except TypeError:
             subHash.update(bytes(ipad + data))
             hash.update(bytes(opad + subHash.digest()))
-        result = base64.b64encode(hash.digest())
-        return result
+        return base64.b64encode(hash.digest())

@@ -11,10 +11,10 @@ class RC4:
 
         self.s = [0] * 256
 
-        for i in range(0, len(self.s)):
+        for i in range(len(self.s)):
             self.s[i] = i
 
-        for i in range(0, len(self.s)):
+        for i in range(len(self.s)):
             self.j = (self.j + self.s[i] + key[i % len(key)]) % 256
             RC4.swap(self.s, i, self.j)
 
@@ -85,8 +85,7 @@ class KeyStream:
     def encodeMessage(self, buf, macOffset, offset, length):
         self.rc4.cipher(buf, offset, length)
         mac = self.computeMac(buf, offset, length)
-        output = buf[0:macOffset] + mac[0:4] + buf[macOffset+4:]
-        return output
+        return buf[0:macOffset] + mac[0:4] + buf[macOffset+4:]
 
     @staticmethod
     def generateKeys(password, nonce):

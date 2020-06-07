@@ -49,7 +49,7 @@ class WARequest(object):
         self.params.append((name,value))
 
     def removeParam(self, name):
-        for i in range(0, len(self.params)):
+        for i in range(len(self.params)):
             if self.params[i][0] == name:
                 del self.params[i]
 
@@ -109,7 +109,7 @@ class WARequest(object):
         if proxy is None:
             self.response = WARequest.sendRequest(host, port, path, headers, params, "GET")
 
-            if not self.response.status == WARequest.OK:
+            if self.response.status != WARequest.OK:
                 logger.error("Request not success, status was %s"%self.response.status)
                 return {}
 
@@ -140,7 +140,7 @@ class WARequest(object):
         self.response = WARequest.sendRequest(host, port, path, headers, params, "POST")
 
 
-        if not self.response.status == WARequest.OK:
+        if self.response.status != WARequest.OK:
             logger.error("Request not success, status was %s" % self.response.status)
             return {}
 
@@ -171,8 +171,7 @@ class WARequest(object):
         logger.debug("Sending %s request to %s" % (reqType, path))
         conn.request(reqType, path, params, headers);
 
-        response = conn.getresponse()
-        return response
+        return conn.getresponse()
 
     def sendRequestWithProxy(host,port,path,headers,params,proxy):
         import pycurl
@@ -203,9 +202,7 @@ class WARequest(object):
         
     @staticmethod
     def build_headers(headers_tuple):
-        headers_array = []
-        for idx in headers_tuple:
-            headers_array.append(idx + ":"+headers_tuple[idx])
+        headers_array = [idx + ":"+headers_tuple[idx] for idx in headers_tuple]
         print(headers_array)
         return headers_array
 

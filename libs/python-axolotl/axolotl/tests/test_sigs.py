@@ -41,7 +41,7 @@ class Curve25519Test(unittest.TestCase):
 
     def test_randomAgreements(self):
 
-        for i in range(0, 50):
+        for _ in range(50):
             alice = Curve.generateKeyPair()
             bob = Curve.generateKeyPair()
             sharedAlice = Curve.calculateAgreement(bob.getPublicKey(), alice.getPrivateKey())

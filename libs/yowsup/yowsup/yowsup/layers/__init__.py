@@ -123,11 +123,10 @@ class YowProtocolLayer(YowLayer):
         self.iqRegistry = {}
 
     def receive(self, node):
-        if not self.processIqRegistry(node):
-            if node.tag in self.handleMap:
-                recv, _ = self.handleMap[node.tag]
-                if recv:
-                    recv(node)
+        if not self.processIqRegistry(node) and node.tag in self.handleMap:
+            recv, _ = self.handleMap[node.tag]
+            if recv:
+                recv(node)
 
     def send(self, entity):
         if entity.getTag() in self.handleMap:
@@ -169,7 +168,7 @@ class YowParallelLayer(YowLayer):
     def __init__(self, sublayers = None):
         super(YowParallelLayer, self).__init__()
         self.sublayers = sublayers or []
-        self.sublayers = tuple([sublayer() for sublayer in sublayers])
+        self.sublayers = tuple(sublayer() for sublayer in sublayers)
         for s in self.sublayers:
             #s.setLayers(self, self)
             s.toLower = self.toLower

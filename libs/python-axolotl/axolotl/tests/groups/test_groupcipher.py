@@ -116,10 +116,8 @@ class GroupCipherTest(unittest.TestCase):
 
         bobSessionBuilder.process(GROUP_SENDER, receivedAliceDistributionMessage)
 
-        ciphertexts = []
-        for i in range(0, 100):
-            ciphertexts.append(aliceGroupCipher.encrypt("up the punks"))
-        while len(ciphertexts) > 0:
+        ciphertexts = [aliceGroupCipher.encrypt("up the punks") for _ in range(100)]
+        while ciphertexts:
             index = KeyHelper.getRandomSequence(2147483647) % len(ciphertexts)
             ciphertext = ciphertexts.pop(index)
             plaintext = bobGroupCipher.decrypt(ciphertext)

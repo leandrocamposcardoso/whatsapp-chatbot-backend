@@ -11,8 +11,7 @@ class Receiver(object):
         receivers.append(self)
         
     def destroy(self):
-        receivers[:] = [receiver for receiver in receivers 
-                            if not receiver == self]
+        receivers[:] = [receiver for receiver in receivers if receiver != self]
 
 
 def intercept(self, message_entity):
@@ -39,18 +38,16 @@ def intercept_with_identifier(message_entity):
         return False
 
 def receivers_have_global():
-    for receiver in receivers:
-        if receiver.identifier == "__global__":
-            return True
-
-    return False
+    return any(receiver.identifier == "__global__" for receiver in receivers)
 
 
 def handle_global_receivers(message_entity):
     for receiver in receivers:
-        if receiver.identifier == "__global__":
-            if helper.get_conversation(message_entity) == receiver.conversation:
-                receiver.fn(message_entity)
+        if (
+            receiver.identifier == "__global__"
+            and helper.get_conversation(message_entity) == receiver.conversation
+        ):
+            receiver.fn(message_entity)
 
 
 def get_receiver(message_entity):

@@ -42,9 +42,9 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
         :type protocolTreeNode: ProtocolTreeNode
         """
         if not self.processIqRegistry(protocolTreeNode):
-            if protocolTreeNode.tag == "message" or protocolTreeNode.tag == "media":
+            if protocolTreeNode.tag in ["message", "media"]:
                 self.onMessage(protocolTreeNode)
-            elif not protocolTreeNode.tag == "receipt":
+            elif protocolTreeNode.tag != "receipt":
                 #receipts will be handled by send layer
                 self.toUpper(protocolTreeNode)
 
@@ -181,7 +181,7 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
         m = Message()
         signals.node_intercepted.send((node, serializedData))
         handled = False
-    
+
         try:
             m.ParseFromString(serializedData)
             #pprint(m)
@@ -193,8 +193,8 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
                 return
             else:
                 raise ValueError("Unhandled")
-            
-        if not m or not serializedData:
+
+        if not (m and serializedData):
             raise ValueError("Empty message")
 
         if m.HasField("sender_key_distribution_message"):
@@ -203,23 +203,23 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
 
         if m.HasField("conversation"):
             self.handleConversationMessage(node, m.conversation)
-            
+
         elif m.HasField("contact_message"):
             self.handleContactMessage(node, m.contact_message)
-            
+
         # TODO: Change name of this message type since its not url_message anymore
         # Whenever a @tag message or an anwer message is sended fits inside here
         elif m.HasField("url_message"):
             #print("Special message received")
             #self.handleUrlMessage(node, m.url_message)
             self.handleComplexMessage(node, m.url_message)
-            
+
         elif m.HasField("location_message"):
             self.handleLocationMessage(node, m.location_message)
-            
+
         elif m.HasField("image_message"):
             self.handleImageMessage(node, m.image_message)
-            
+
         #elif m.HasField("document_message"):
         #    logger.debug("Handle document message")
         #    self.handleDocumentMessage(node, m.document_message)
@@ -229,7 +229,7 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
         #elif m.HasField("audio_message"):
         #    logger.debug("Handle audio message")
         #    self.handleAudioMessage(node, m.audio_message)
-        
+
         else:
             logger.warning("Unhandled message")
             pprint(m)

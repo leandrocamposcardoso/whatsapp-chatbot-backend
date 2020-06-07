@@ -216,7 +216,7 @@ class YowStack(object):
             inst.setStack(self)
             self.__stackInstances.append(inst)
 
-        for i in range(0, len(self.__stackInstances)):
+        for i in range(len(self.__stackInstances)):
             upperLayer = self.__stackInstances[i + 1] if (i + 1) < len(self.__stackInstances) else None
             lowerLayer = self.__stackInstances[i - 1] if i > 0 else None
             self.__stackInstances[i].setLayers(upperLayer, lowerLayer)

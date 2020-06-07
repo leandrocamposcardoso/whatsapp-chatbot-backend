@@ -28,7 +28,7 @@ def handle(message):
     global motivo
     global opiniao
     global feedback
-    if not message.text == "":
+    if message.text != "":
         nome = message.who_name
         request = ai.text_request()
         request.lang = 'pt-br'
@@ -53,9 +53,8 @@ def handle(message):
         opiniao = ""
         feedback = ""
         #Pega nome
-        if action == 'start':
-            if not parameters['nome'] == "":
-                nome = parameters['nome']
+        if action == 'start' and parameters['nome'] != "":
+            nome = parameters['nome']
 
 
         #Estaria presente
@@ -77,26 +76,16 @@ def handle(message):
             userdata.update({'nome':nome},{'$set':{'respondeu':respondeu}},upsert=True)
         #Feedback (Não poderia responder)
         if action == 'feedback':
-            if not parameters['feedback'] == "":
+            if parameters['feedback'] != "":
                 feedback = parameters['feedback']
-                userdata.update({'nome':nome},{'$set':{'feedback':feedback}},upsert=True)
             else:
                 feedback = "Sem feedback"
-                userdata.update({'nome':nome},{'$set':{'feedback':feedback}},upsert=True)
+            userdata.update({'nome':nome},{'$set':{'feedback':feedback}},upsert=True)
         #Motivo
         if action == 'motivo':
-            if not parameters['number'] == "":
-                motivo = parameters['number']
-                userdata.update({'nome':nome},{'$set':{'motivo':motivo[0]}},upsert=True)
-            else:
-                motivo = "Sem motivo"
-                userdata.update({'nome':nome},{'$set':{'motivo':motivo[0]}},upsert=True)
-
+            motivo = parameters['number'] if parameters['number'] != "" else "Sem motivo"
+            userdata.update({'nome':nome},{'$set':{'motivo':motivo[0]}},upsert=True)
         #Opiniao
         if action == 'opiniao':
-            if not parameters['number'] == "":
-                opiniao = parameters['number']
-                userdata.update({'nome':nome},{'$set':{'opiniao':opiniao[0]}},upsert=True)
-            else:
-                opiniao = "Sem opiniao"
-                userdata.update({'nome':nome},{'$set':{'opiniao':opiniao[0]}},upsert=True)
+            opiniao = parameters['number'] if parameters['number'] != "" else "Sem opiniao"
+            userdata.update({'nome':nome},{'$set':{'opiniao':opiniao[0]}},upsert=True)

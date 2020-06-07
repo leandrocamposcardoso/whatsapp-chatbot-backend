@@ -46,8 +46,7 @@ class MediaUploader(WARequest, threading.Thread):
     def pad(self,s):
         # return s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
         y = (16 - len(s) % 16) * chr(16 - len(s) % 16)
-        a = s + y.encode()
-        return a
+        return s + y.encode()
 
     def getKey(self, filetype):
         if "video" in filetype:
@@ -56,9 +55,7 @@ class MediaUploader(WARequest, threading.Thread):
             return DownloadableMediaMessageProtocolEntity.IMAGE_KEY
         elif "audio" in filetype:
             return DownloadableMediaMessageProtocolEntity.AUDIO_KEY
-        elif "application" in filetype:
-            return DownloadableMediaMessageProtocolEntity.DOCUMENT_KEY
-        elif "text" in filetype:
+        elif "application" in filetype or "text" in filetype:
             return DownloadableMediaMessageProtocolEntity.DOCUMENT_KEY
         raise Exception ("FILE TYPE NOT SUPPORTED")
                 
@@ -82,9 +79,7 @@ class MediaUploader(WARequest, threading.Thread):
         hash = mac.digest()
         hashKey = ByteUtil.trim(mac.digest(), 10)
 
-        finalEnc =  imgEnc + hashKey
-
-        return finalEnc
+        return imgEnc + hashKey
 
     def run(self):
         sourcePath = self.sourcePath

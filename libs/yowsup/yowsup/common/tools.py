@@ -110,8 +110,7 @@ class StorageTools:
 class TimeTools:
     @staticmethod
     def parseIso(iso):
-        d=datetime.datetime(*map(int, re.split('[^\d]', iso)[:-1]))
-        return d
+        return datetime.datetime(*map(int, re.split('[^\d]', iso)[:-1]))
 
     @staticmethod
     def utcToLocal(dt):

@@ -44,8 +44,7 @@ class RetryOutgoingReceiptProtocolEntity(OutgoingReceiptProtocolEntity):
         return node
 
     def __str__(self):
-        out = super(RetryOutgoingReceiptProtocolEntity, self).__str__()
-        return out
+        return super(RetryOutgoingReceiptProtocolEntity, self).__str__()
 
     @staticmethod
     def fromProtocolTreeNode(node):

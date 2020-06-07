@@ -68,9 +68,8 @@ class YowIqProtocolLayer(YowProtocolLayer):
     def stop_thread(self):
         if self._pingThread:
             self.__logger.debug("stopping ping thread")
-            if self._pingThread:
-                self._pingThread.stop()
-                self._pingThread = None
+            self._pingThread.stop()
+            self._pingThread = None
             self._pingQueue = {}
         
     @EventCallback(YowNetworkLayer.EVENT_STATE_DISCONNECT)
@@ -94,15 +93,11 @@ class YowPingThread(Thread):
 
     def run(self):
         while not self._stop:
-            for i in range(0, self._interval):
+            for _ in range(self._interval):
                 time.sleep(1)
-                if self._stop:
-                    self.__logger.debug("%s - ping thread stopped" % self.name)
-                    return
             ping = PingIqProtocolEntity()
             self._layer.waitPong(ping.getId())
-            if not self._stop:
-                self._layer.sendIq(ping)
+            self._layer.sendIq(ping)
 
     def stop(self):
         self._stop = True

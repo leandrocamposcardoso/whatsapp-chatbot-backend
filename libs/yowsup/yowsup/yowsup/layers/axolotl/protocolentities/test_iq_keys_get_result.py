@@ -12,7 +12,7 @@ class ResultGetKeysIqProtocolEntityTest(ResultIqProtocolEntityTest):
         listNode = ProtocolTreeNode("list")
         self.node.addChild(listNode)
 
-        for i in range(0, 1):
+        for i in range(1):
             userNode = ProtocolTreeNode("user", {"jid": "user_%s@%s" % (i, YowConstants.WHATSAPP_SERVER)})
             listNode.addChild(userNode)
             registrationNode = ProtocolTreeNode("registration",

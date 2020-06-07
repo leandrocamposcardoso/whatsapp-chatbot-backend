@@ -140,11 +140,7 @@ class SessionState:
             return False
 
         messageKeyList = chain.messageKeys
-        for messageKey in messageKeyList:
-            if messageKey.index == counter:
-                return True
-
-        return False
+        return any(messageKey.index == counter for messageKey in messageKeyList)
 
     def removeMessageKeys(self, ECPublicKey_senderEphemeral, counter):
         senderEphemeral = ECPublicKey_senderEphemeral
@@ -156,7 +152,7 @@ class SessionState:
         messageKeyList = chain.messageKeys
         result = None
 
-        for i in range(0, len(messageKeyList)):
+        for i in range(len(messageKeyList)):
             messageKey = messageKeyList[i]
             if messageKey.index == counter:
                 result = MessageKeys(messageKey.cipherKey, messageKey.macKey, messageKey.iv, messageKey.index)
