@@ -25,10 +25,7 @@ class OutgoingReceiptProtocolEntity(ReceiptProtocolEntity):
 
     def __init__(self, messageIds, to, read = False, participant = None, callId = None):
         if type(messageIds) in (list, tuple):
-            if len(messageIds) > 1:
-                receiptId = self._generateId()
-            else:
-                receiptId = messageIds[0]
+            receiptId = self._generateId() if len(messageIds) > 1 else messageIds[0]
         else:
             receiptId = messageIds
             messageIds = [messageIds]

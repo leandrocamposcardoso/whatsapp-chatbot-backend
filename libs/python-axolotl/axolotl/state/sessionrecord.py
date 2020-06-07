@@ -32,11 +32,11 @@ class SessionRecord:
         if self.sessionState.getSessionVersion() == version and aliceBaseKey == self.sessionState.getAliceBaseKey():
             return True
 
-        for state in self.previousStates:
-            if state.getSessionVersion() == version and aliceBaseKey == state.getAliceBaseKey():
-                return True
-
-        return False
+        return any(
+            state.getSessionVersion() == version
+            and aliceBaseKey == state.getAliceBaseKey()
+            for state in self.previousStates
+        )
 
     def getSessionState(self):
         return self.sessionState

@@ -77,11 +77,10 @@ class WriteEncoder:
             self.writeInt20(size, data)
         else:
             r = None
-            if packed:
-                if size < 128:
-                    r = self.tryPackAndWriteHeader(255, bytes__, data)
-                    if r is None:
-                        r = self.tryPackAndWriteHeader(251, bytes__, data)
+            if packed and size < 128:
+                r = self.tryPackAndWriteHeader(255, bytes__, data)
+                if r is None:
+                    r = self.tryPackAndWriteHeader(251, bytes__, data)
 
             if r is None:
                 data.append(252)
@@ -156,11 +155,10 @@ class WriteEncoder:
     def encodeString(self, string):
         res = []
 
-        if type(string) == bytes:
-            for char in string:
+        for char in string:
+            if type(string) == bytes:
                 res.append(char)
-        else:
-            for char in string:
+            else:
                 res.append(ord(char))
         return res;
 
@@ -179,7 +177,7 @@ class WriteEncoder:
             return None
 
         arr = [0] * int((size + 1) / 2)
-        for i in range(0, size):
+        for i in range(size):
             packByte = self.packByte(v, headerData[i])
             if packByte == -1:
                 arr = []

@@ -73,14 +73,13 @@ class XMLResponseParser(ResponseParser):
     def xmlToDict(self, xmlNode):
         if xmlNode.nodeName == "#document":
             
-            node = {xmlNode.firstChild.nodeName:{}}
-            
-            node[xmlNode.firstChild.nodeName] = self.xmlToDict(xmlNode.firstChild)
+            node = {xmlNode.firstChild.nodeName: self.xmlToDict(xmlNode.firstChild)}
+
             return node
-        
+
         node = {}
         curr = node
-        
+
         if xmlNode.attributes:
             for name, value in xmlNode.attributes.items():
                 curr[name] = value
@@ -90,8 +89,8 @@ class XMLResponseParser(ResponseParser):
             if n.nodeType == n.TEXT_NODE:
                 curr["__TEXT__"] = n.data
                 continue
-            
-            if not n.nodeName in curr:
+
+            if n.nodeName not in curr:
                 curr[n.nodeName] = []
 
             if len(xmlNode.getElementsByTagName(n.nodeName)) > 1:
@@ -99,8 +98,8 @@ class XMLResponseParser(ResponseParser):
                 curr[n.nodeName].append(self.xmlToDict(n))
             else:
                 curr[n.nodeName] = self.xmlToDict(n)
-            
-            
+
+
         return node
 
 class JSONResponseParser(ResponseParser):

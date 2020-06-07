@@ -44,7 +44,7 @@ class AxolotlControlLayer(AxolotlBaseLayer):
             self.toUpper(protocolTreeNode)
 
     def isInitState(self):
-        return self.store == None or self.state == self.__class__._STATE_INIT
+        return self.store is None or self.state == self.__class__._STATE_INIT
 
     def isGenKeysState(self):
         return self.state == self.__class__._STATE_GENKEYS

@@ -42,7 +42,7 @@ class ResultStatusesIqProtocolEntity(IqProtocolEntity):
     def fromProtocolTreeNode(node):
         statusNode = node.getChild('status')
         users = statusNode.getAllChildren()
-        statuses = dict()
+        statuses = {}
         for user in users:
             statuses[user['jid']] = (user.getData(), user['t'])
 

@@ -114,8 +114,7 @@ class StorageTools:
 class TimeTools:
     @staticmethod
     def parseIso(iso):
-        d=datetime.datetime(*map(int, re.split('[^\d]', iso)[:-1]))
-        return d
+        return datetime.datetime(*map(int, re.split('[^\d]', iso)[:-1]))
 
     @staticmethod
     def utcToLocal(dt):
@@ -264,7 +263,7 @@ class MapTools:
         tile_height = kwargs.get('tile_height', 5)
 
         # Check that we have x and y tile coordinates
-        if start_x == None or start_y == None:
+        if start_x is None or start_y is None:
             start_x, start_y = self.getXY()
 
         # Determine the size of the image
@@ -273,8 +272,8 @@ class MapTools:
         # Create a new image of the size require
         map_img = Image.new('RGB', (width, height))
 
-        for x in range(0, tile_width):
-            for y in range(0, tile_height):
+        for x in range(tile_width):
+            for y in range(tile_height):
                 url = 'https://mt0.google.com/vt?x=' + str(start_x + x) + '&y=' + str(start_y + y) + '&z=' + str(
                     self._zoom)
 

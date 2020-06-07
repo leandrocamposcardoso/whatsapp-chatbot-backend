@@ -22,7 +22,7 @@ class YowCoderLayer(YowLayer):
             self.getProp(self.__class__.PROP_DOMAIN),
             self.getProp(self.__class__.PROP_RESOURCE)
         )
-        for i in range(0, 4):
+        for _ in range(4):
             self.write(streamStartBytes.pop(0))
         self.write(streamStartBytes)        
 

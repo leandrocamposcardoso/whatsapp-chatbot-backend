@@ -16,32 +16,33 @@ class ProtocolTreeNode(object):
         :return: bool
         """
         #
-        if protocolTreeNode.__class__ == ProtocolTreeNode\
-            and self.tag == protocolTreeNode.tag\
-            and self.data == protocolTreeNode.data\
-            and self.attributes == protocolTreeNode.attributes\
-            and len(self.getAllChildren()) == len(protocolTreeNode.getAllChildren()):
-                found = False
-                for c in self.getAllChildren():
-                    for c2 in protocolTreeNode.getAllChildren():
-                        if c == c2:
-                            found = True
-                            break
-                    if not found:
-                        return False
+        if (
+            protocolTreeNode.__class__ != ProtocolTreeNode
+            or self.tag != protocolTreeNode.tag
+            or self.data != protocolTreeNode.data
+            or self.attributes != protocolTreeNode.attributes
+            or len(self.getAllChildren()) != len(protocolTreeNode.getAllChildren())
+        ):
+            return False
+        found = False
+        for c in self.getAllChildren():
+            for c2 in protocolTreeNode.getAllChildren():
+                if c == c2:
+                    found = True
+                    break
+            if not found:
+                return False
 
-                found = False
-                for c in protocolTreeNode.getAllChildren():
-                    for c2 in self.getAllChildren():
-                        if c == c2:
-                            found = True
-                            break
-                    if not found:
-                        return False
+        found = False
+        for c in protocolTreeNode.getAllChildren():
+            for c2 in self.getAllChildren():
+                if c == c2:
+                    found = True
+                    break
+            if not found:
+                return False
 
-                return True
-
-        return False
+        return True
 
     def __hash__(self):
         return hash(self.tag) ^ hash(tuple(self.attributes.items())) ^ hash(self.data)
@@ -157,12 +158,7 @@ class ProtocolTreeNode(object):
         self.attributes[key] = value
 
     def getAllChildren(self,tag = None):
-        ret = []
         if tag is None:
             return self.children
 
-        for c in self.children:
-            if tag == c.tag:
-                ret.append(c)
-
-        return ret
+        return [c for c in self.children if tag == c.tag]

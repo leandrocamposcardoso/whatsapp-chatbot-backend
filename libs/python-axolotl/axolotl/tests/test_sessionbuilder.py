@@ -253,7 +253,7 @@ class SessionBuilderTest(unittest.TestCase):
         bobSignedPreKeySignature = Curve.calculateSignature(bobIdentityKeyStore.getIdentityKeyPair().getPrivateKey(),
                                                             bobSignedPreKeyPair.getPublicKey().serialize())
 
-        for i in range(0, len(bobSignedPreKeySignature) * 8):
+        for i in range(len(bobSignedPreKeySignature) * 8):
             modifiedSignature = bytearray(bobSignedPreKeySignature[:])
             modifiedSignature[int(i/8)] ^= 0x01 << (i % 8)
 
@@ -324,7 +324,11 @@ class SessionBuilderTest(unittest.TestCase):
             bobStore.saveIdentity(self.__class__.ALICE_RECIPIENT_ID, aliceKeyExchangeMessage.getIdentityKey())
         bobKeyExchangeMessage = bobSessionBuilder.processKeyExchangeMessage(aliceKeyExchangeMessage)
 
-        self.assertTrue(aliceSessionBuilder.processKeyExchangeMessage(bobKeyExchangeMessage) == None)
+        self.assertTrue(
+            aliceSessionBuilder.processKeyExchangeMessage(bobKeyExchangeMessage)
+            is None
+        )
+
 
         self.runInteraction(aliceStore, bobStore)
 
@@ -358,7 +362,7 @@ class SessionBuilderTest(unittest.TestCase):
         if sys.version_info >= (3,0): plaintext = plaintext.decode()
         self.assertEqual(plaintext, originalMessage)
 
-        for i in range(0, 10):
+        for i in range(10):
             loopingMessage = "What do we mean by saying that existence precedes essence? " \
                              "We mean that man first of all exists, encounters himself, " \
                              "surges up in the world--and defines himself aftward. %s" % i
@@ -367,7 +371,7 @@ class SessionBuilderTest(unittest.TestCase):
             if sys.version_info >= (3,0): loopingPlaintext = loopingPlaintext.decode()
             self.assertEqual(loopingPlaintext, loopingMessage)
 
-        for i in range(0, 10):
+        for i in range(10):
             loopingMessage = "What do we mean by saying that existence precedes essence? " \
                  "We mean that man first of all exists, encounters himself, " \
                  "surges up in the world--and defines himself aftward. %s" % i
@@ -379,14 +383,14 @@ class SessionBuilderTest(unittest.TestCase):
 
         aliceOutOfOrderMessages = []
 
-        for i in range(0, 10):
+        for i in range(10):
             loopingMessage = "What do we mean by saying that existence precedes essence? " \
                  "We mean that man first of all exists, encounters himself, " \
                  "surges up in the world--and defines himself aftward. %s" % i
             aliceLoopingMessage = aliceSessionCipher.encrypt(loopingMessage)
             aliceOutOfOrderMessages.append((loopingMessage, aliceLoopingMessage))
 
-        for i in range(0, 10):
+        for i in range(10):
             loopingMessage = "What do we mean by saying that existence precedes essence? " \
                  "We mean that man first of all exists, encounters himself, " \
                  "surges up in the world--and defines himself aftward. %s" % i
@@ -395,7 +399,7 @@ class SessionBuilderTest(unittest.TestCase):
             if sys.version_info >= (3,0): loopingPlaintext = loopingPlaintext.decode()
             self.assertEqual(loopingPlaintext, loopingMessage)
 
-        for i in range(0, 10):
+        for i in range(10):
             loopingMessage = "You can only desire based on what you know: %s" % i
             bobLoopingMessage = bobSessionCipher.encrypt(loopingMessage)
 

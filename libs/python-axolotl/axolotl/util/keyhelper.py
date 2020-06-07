@@ -30,8 +30,7 @@ class KeyHelper:
                      'b7c06668dcd7d5e12205011524f0c15467100dd603e0d6020f4d293' \
                      'edfbcd82129b14a88791ac81365c'
         serialized = binascii.unhexlify(serialized.encode())
-        identityKeyPair = IdentityKeyPair(publicKey, keyPair.getPrivateKey())
-        return identityKeyPair
+        return IdentityKeyPair(publicKey, keyPair.getPrivateKey())
         # return IdentityKeyPair(serialized=serialized)
 
     @staticmethod
@@ -40,8 +39,7 @@ class KeyHelper:
         Generate a registration ID.  Clients should only do this once,
         at install time.
         """
-        regId = KeyHelper.getRandomSequence()
-        return regId
+        return KeyHelper.getRandomSequence()
 
     @staticmethod
     def getRandomSequence(max=4294967296):
@@ -66,7 +64,7 @@ class KeyHelper:
         """
         results = []
         start -= 1
-        for i in range(0, count):
+        for i in range(count):
             preKeyId = ((start + i) % (Medium.MAX_VALUE - 1)) + 1
             results.append(PreKeyRecord(preKeyId, Curve.generateKeyPair()))
 
@@ -77,9 +75,9 @@ class KeyHelper:
         keyPair = Curve.generateKeyPair()
         signature = Curve.calculateSignature(identityKeyPair.getPrivateKey(), keyPair.getPublicKey().serialize())
 
-        spk = SignedPreKeyRecord(signedPreKeyId, int(round(time.time() * 1000)), keyPair, signature)
-
-        return spk
+        return SignedPreKeyRecord(
+            signedPreKeyId, int(round(time.time() * 1000)), keyPair, signature
+        )
 
     @staticmethod
     def generateSenderSigningKey():

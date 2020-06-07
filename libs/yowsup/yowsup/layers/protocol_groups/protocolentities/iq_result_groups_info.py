@@ -57,11 +57,11 @@ class InfoGroupsResultIqProtocolEntity(ResultIqProtocolEntity):
         return self.subjectOwnerJid if full else self.subjectOwnerJid.split('@')[0]
 
     def getGroupAdmins(self, full = True):
-        admins = []
-        for jid, _type in self.participants.items():
-            if _type == self.__class__.TYPE_PARTICIPANT_ADMIN:
-                admins.append(jid if full else jid.split('@')[0])
-        return admins
+        return [
+            jid if full else jid.split('@')[0]
+            for jid, _type in self.participants.items()
+            if _type == self.__class__.TYPE_PARTICIPANT_ADMIN
+        ]
 
     def __str__(self):
         out = super(InfoGroupsResultIqProtocolEntity, self).__str__()

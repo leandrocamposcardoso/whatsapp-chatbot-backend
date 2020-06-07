@@ -20,8 +20,8 @@ class ReadDecoder:
         if not token:
             index = self.readInt8(data)
             token = self.tokenDictionary.getToken(index, True)
-            if not token:
-                raise ValueError("Invalid token %s" % token)
+        if not token:
+            raise ValueError("Invalid token %s" % token)
 
         return token
 
@@ -54,7 +54,7 @@ class ReadDecoder:
         nrOfNibbles = size * 2 - int(ignoreLastNibble)
         dataArr = self.readArray(size, data)
         string = ''
-        for i in range(0, nrOfNibbles):
+        for i in range(nrOfNibbles):
             _byte = dataArr[int(math.floor(i/2))]
             _shift = 4 * (1 - i % 2)
             dec = (_byte & (15 << _shift)) >> _shift
@@ -75,10 +75,10 @@ class ReadDecoder:
         size = size & 0x7F
         text = bytearray(self.readArray(size, data))
         hexData = binascii.hexlify(str(text) if sys.version_info < (2,7) else text).upper()
-        dataSize = len(hexData)
         out = []
         if remove == 0:
-            for i in range(0, dataSize):
+            dataSize = len(hexData)
+            for i in range(dataSize):
                 char = chr(hexData[i]) if type(hexData[i]) is int else hexData[i] #python2/3 compat
                 val = ord(binascii.unhexlify("0%s" % char))
                 if i == (dataSize - 1) and val > 11 and n != 251: continue
@@ -96,7 +96,7 @@ class ReadDecoder:
         raise ValueError("bad packed type %s" % n)
 
     def unpackHex(self, n):
-        if n in range(0, 10):
+        if n in range(10):
             return n + 48
         if n in range(10, 16):
             return 65 + (n - 10)
@@ -104,7 +104,7 @@ class ReadDecoder:
         raise ValueError("bad hex %s" % n)
 
     def unpackNibble(self, n):
-        if n in range(0, 10):
+        if n in range(10):
             return n + 48
         if n in (10, 11):
             return 45 + (n - 10)
@@ -143,8 +143,7 @@ class ReadDecoder:
         int1 = data.pop(0)
         int2 = data.pop(0)
         int3 = data.pop(0)
-        value = (int1 << 16) + (int2 << 8) + (int3 << 0)
-        return value
+        return (int1 << 16) + (int2 << 8) + (int3 << 0)
 
     def readInt31(self, data):
         data.pop(0)
@@ -169,7 +168,7 @@ class ReadDecoder:
 
     def readAttributes(self, attribCount, data):
         attribs = {}
-        for i in range(0, int(attribCount)):
+        for _ in range(int(attribCount)):
             key = self.readString(self.readInt8(data), data)
             value = self.readString(self.readInt8(data), data)
             attribs[key]=value
@@ -219,11 +218,7 @@ class ReadDecoder:
         raise Exception("readString couldn't match token "+str(token))
 
     def readArray(self, length, data):
-        out = []
-        for i in range(0, length):
-            out.append(data.pop(0))
-
-        return out
+        return [data.pop(0) for _ in range(length)]
 
     def nextTreeInternal(self, data):
         size = self.readListSize(self.readInt8(data), data)
@@ -271,11 +266,7 @@ class ReadDecoder:
 
     def readList(self,token, data):
         size = self.readListSize(token, data)
-        listx = []
-        for i in range(0,size):
-            listx.append(self.nextTreeInternal(data))
-
-        return listx;
+        return [self.nextTreeInternal(data) for _ in range(size)];
 
     def isListTag(self, b):
         return b in (248, 0, 249)

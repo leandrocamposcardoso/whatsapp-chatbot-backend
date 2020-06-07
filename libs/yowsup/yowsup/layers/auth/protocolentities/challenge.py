@@ -19,5 +19,4 @@ class ChallengeProtocolEntity(ProtocolEntity):
     @staticmethod
     def fromProtocolTreeNode(node):
         nonce = list(map(ord,node.getData()))
-        entity = ChallengeProtocolEntity(bytearray(nonce))
-        return entity
+        return ChallengeProtocolEntity(bytearray(nonce))

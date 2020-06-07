@@ -34,5 +34,4 @@ class WAExistsRequest(WARequest):
         self.setParser(JSONResponseParser())
 
     def send(self, parser = None):
-        res = super(WAExistsRequest, self).send(parser)
-        return res
+        return super(WAExistsRequest, self).send(parser)

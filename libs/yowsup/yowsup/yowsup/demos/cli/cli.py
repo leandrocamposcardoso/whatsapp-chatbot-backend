@@ -42,7 +42,7 @@ class Cli(object):
                     subcommand = "_"
 
 
-                if not cmd in self.commands:
+                if cmd not in self.commands:
                     self.commands[cmd] = {}
 
                 self.commands[cmd][subcommand] = {
@@ -75,15 +75,16 @@ class Cli(object):
                 outArr.extend([None] * (ind - len(outArr) + 1))
 
 
-            if outArr[ind] != None:
+            if outArr[ind] is None:
+                outArr[ind] = cmd
+
+            else:
                 for i in range(len(outArr) - 1, 0, -1):
                     if outArr[i] is None:
                         outArr[i] = outArr[ind]
                         outArr[ind] = cmd
                         return
                 outArr.append(cmd)
-            else:
-                outArr[ind] = cmd
 
         for cmd, subcommands in self.commands.items():
             for subcmd, subcmdDetails in subcommands.items():
@@ -116,7 +117,7 @@ class Cli(object):
 
         cmd = cmdInputDissect[0]
 
-        if not cmd in self.commands:
+        if cmd not in self.commands:
             return self.print_usage()
 
         cmdData = self.commands[cmd]

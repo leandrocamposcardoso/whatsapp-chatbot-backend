@@ -16,11 +16,10 @@ class InMemorySignedPreKeyStore(SignedPreKeyStore):
         return SignedPreKeyRecord(serialized=self.store[signedPreKeyId])
 
     def loadSignedPreKeys(self):
-        results = []
-        for serialized in self.store.values():
-            results.append(SignedPreKeyRecord(serialized=serialized))
-
-        return results
+        return [
+            SignedPreKeyRecord(serialized=serialized)
+            for serialized in self.store.values()
+        ]
 
     def storeSignedPreKey(self, signedPreKeyId, signedPreKeyRecord):
         self.store[signedPreKeyId] = signedPreKeyRecord.serialize()

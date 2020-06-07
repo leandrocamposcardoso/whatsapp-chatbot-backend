@@ -36,8 +36,11 @@ class SessionCipher:
         """
         # TODO: make this less ugly and python 2 and 3 compatible
         # paddedMessage = bytearray(paddedMessage.encode() if (sys.version_info >= (3, 0) and not type(paddedMessage) in (bytes, bytearray)) or type(paddedMessage) is unicode else paddedMessage)
-        if (sys.version_info >= (3, 0) and
-                not type(paddedMessage) in (bytes, bytearray)) or type(paddedMessage) is unicode:
+        if (
+            sys.version_info >= (3, 0)
+            and type(paddedMessage) not in (bytes, bytearray)
+            or type(paddedMessage) is unicode
+        ):
             paddedMessage = bytearray(paddedMessage.encode())
         else:
             paddedMessage = bytearray(paddedMessage)
@@ -119,7 +122,7 @@ class SessionCipher:
         except InvalidMessageException as e:
             exceptions.append(e)
 
-        for i in range(0, len(previousStates)):
+        for i in range(len(previousStates)):
             previousState = previousStates[i]
             try:
                 promotedState = SessionState(previousState)
@@ -233,9 +236,7 @@ class SessionCipher:
         ivBytes = bytearray(16)
         ByteUtil.intToByteArray(ivBytes, 0, counter)
 
-        cipher = AES.new(key, AES.MODE_CTR, IV=bytes(ivBytes), counter=ctr)
-
-        return cipher
+        return AES.new(key, AES.MODE_CTR, IV=bytes(ivBytes), counter=ctr)
 
 
 BS = 16

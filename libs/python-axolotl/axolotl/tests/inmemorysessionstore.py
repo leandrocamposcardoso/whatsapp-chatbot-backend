@@ -15,12 +15,7 @@ class InMemorySessionStore(SessionStore):
             return SessionRecord()
 
     def getSubDeviceSessions(self, recepientId):
-        deviceIds = []
-        for k in self.sessions.keys():
-            if k[0] == recepientId:
-                deviceIds.append(k[1])
-
-        return deviceIds
+        return [k[1] for k in self.sessions.keys() if k[0] == recepientId]
 
     def storeSession(self, recepientId, deviceId, sessionRecord):
         self.sessions[(recepientId, deviceId)] = sessionRecord.serialize()
